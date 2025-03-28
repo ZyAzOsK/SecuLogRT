@@ -4,7 +4,6 @@ import time
 from .base_monitor import BaseMonitor
 
 class FileChangeHandler(FileSystemEventHandler):
-    """Handles file system events."""
 
     def __init__(self, monitor):
         self.monitor = monitor
@@ -19,8 +18,6 @@ class FileChangeHandler(FileSystemEventHandler):
         self.monitor.log_event(2003, "File Change", f"File deleted: {event.src_path}", "file_change_monitor")
 
 class FileChangeMonitor(BaseMonitor):
-    """Monitors file changes using watchdog."""
-
     def __init__(self, watch_path="/var/log/"):
         super().__init__()
         self.watch_path = watch_path

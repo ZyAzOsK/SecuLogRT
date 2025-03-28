@@ -4,8 +4,6 @@ import re
 from monitors.base_monitor import BaseMonitor
 
 class AuthLogMonitor(BaseMonitor):
-    """Monitors authentication logs using journalctl."""
-
     def __init__(self):
         super().__init__()
 
@@ -25,7 +23,6 @@ class AuthLogMonitor(BaseMonitor):
             self.process_log(line)
 
     def process_log(self, line):
-        """Parses authentication log entries."""
         if "Failed password" in line:
             match = re.search(r"Failed password for (invalid user )?(\S+) from (\S+)", line)
             if match:

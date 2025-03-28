@@ -31,14 +31,14 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     global process
     last_timestamp = None 
-    logging_stopped_message_sent = False #again to avoid spamming
+    logging_stopped_message_sent = False 
 
     while True:
-        if process is None: #stop sending logs if the logger is not running
-            if not logging_stopped_message_sent: #send messages only once
+        if process is None: 
+            if not logging_stopped_message_sent: 
                 await websocket.send_text("Logging stopped. No new logs.")
-                logging_stopped_message_sent = True #prevent sending again
-            await asyncio.sleep(2) #prevent fast infinite looping
+                logging_stopped_message_sent = True 
+            await asyncio.sleep(2) 
             continue
         try:
             conn = sqlite3.connect(DB_PATH)
@@ -53,23 +53,22 @@ async def websocket_endpoint(websocket: WebSocket):
             if logs:
                 for log in logs:
                     await websocket.send_text(str(log))
-                last_timestamp = logs[-1][-1] #update the last timestamp
-                logging_stopped_message_sent = False #reset the flag when logs are available
+                last_timestamp = logs[-1][-1] 
+                logging_stopped_message_sent = False 
             else:
                 if not logging_stopped_message_sent:
                     await websocket.send_text("Scanning for new logs...")
-                    logging_stopped_message_sent = True #prevent spam
+                    logging_stopped_message_sent = True 
                 
-            await asyncio.sleep(1)  # Adjust interval as needed
+            await asyncio.sleep(1) 
        
         except sqlite3.OperationalError as e:
             print(f"[!] Database error: {e}")
-            await asyncio.sleep(2)  # Add a delay before retrying
+            await asyncio.sleep(2) 
 
 
 @app.get("/start-logging")
 def start_logging():
-    """ Starts the security_logger.py script. """
     global process
     if process is None:
         process = subprocess.Popen(["python3", LOGGER_SCRIPT_PATH])
@@ -79,26 +78,24 @@ def start_logging():
 
 @app.get("/stop-logging")
 def stop_logging():
-    """ Stops the security_logger.py script by sending an exit command. """
     global process
     if process is not None:
-        parent = psutil.Process(process.pid) # Get the parent process
-        for child in parent.children(recursive=True): #kill all child processes
+        parent = psutil.Process(process.pid) 
+        for child in parent.children(recursive=True): 
             child.terminate()
-        process.terminate()  # Force stop the process
-        process.wait()  # Ensure cleanup
-        process = None #reset the process variable
+        process.terminate()  
+        process.wait() 
+        process = None 
         return {"status": "Logging stopped"}
     return {"status": "Not running"}
 
 
 @app.get("/clear-database")
 def clear_database():
-    """ Clears the logs from the database. """
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
-        cursor.execute("DELETE FROM security_events")  # Fix table name
+        cursor.execute("DELETE FROM security_events")  
         conn.commit()
         conn.close()
         return {"status": "Database cleared"}

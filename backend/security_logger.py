@@ -10,14 +10,12 @@ def main():
     print("[*] Starting security event logger...")
     print("[*] Type 'exit' and press Enter to stop monitoring safely.")
 
-    # Initialize Monitors
     file_monitor = FileChangeMonitor()
     process_monitor = ProcessMonitor()
     network_monitor = NetworkMonitor()
     auth_monitor = AuthLogMonitor()
     journald_monitor = JournaldMonitor()
 
-    # Start Monitors in Separate Threads
     threads = [
         threading.Thread(target=file_monitor.start_monitoring, daemon=True),
         threading.Thread(target=process_monitor.start_monitoring, daemon=True),
@@ -29,14 +27,12 @@ def main():
     for thread in threads:
         thread.start()
 
-    # Wait for User to Type 'exit'
     while True:
         user_input = input()
         if user_input.strip().lower() == "exit":
             print("[*] Stopping security event logger...")
             break
 
-    # Cleanup
     file_monitor.close()
     process_monitor.close()
     network_monitor.close()

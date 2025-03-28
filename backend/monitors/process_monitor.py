@@ -3,14 +3,11 @@ import time
 from .base_monitor import BaseMonitor
 
 class ProcessMonitor(BaseMonitor):
-    """Monitor process creation and termination events."""
-
     def __init__(self):
         super().__init__()
         self.previous_pids = set(psutil.pids())
 
     def start_monitoring(self):
-        """Start monitoring process changes."""
         print("[*] Monitoring process activities...")
         while True:
             current_pids = set(psutil.pids())
@@ -29,7 +26,7 @@ class ProcessMonitor(BaseMonitor):
                 self.log_event(1002, "Process", f"Process terminated: PID {pid}", "process_monitor")
 
             self.previous_pids = current_pids
-            time.sleep(2)  # Adjust polling interval
+            time.sleep(2)
 
 if __name__ == "__main__":
     monitor = ProcessMonitor()
