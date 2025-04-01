@@ -1,4 +1,4 @@
-# Linux Security Event Monitoring System  - SecuLogRT
+# Linux Security Event Monitoring System - SecuLogRT
 
 A real-time Linux Security Event Monitoring System built and tested on **Arch Linux**.  
 It uses a **FastAPI WebSocket backend** and a **React frontend** to monitor and display security events such as file changes, process activities, network traffic, and authentication logs.  
