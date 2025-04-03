@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { LogEvent, LogSeverity } from "@/utils/logUtils";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
-
+//creating instance
 interface UseWebSocketLogsOptions {
   url: string;
   autoConnect?: boolean;
