@@ -38,7 +38,7 @@ def main():
     network_monitor.close()
     auth_monitor.close()
     journald_monitor.close()
-    print("[*] Security event logger stopped.")
+    print("[*] Security event logger stopped!")
 
 if __name__ == "__main__":
     main()
