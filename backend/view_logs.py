@@ -1,5 +1,5 @@
 # used to check logs for testing purposes, the script prints all logs from the database.
-
+# import os
 
 import sqlite3
 
